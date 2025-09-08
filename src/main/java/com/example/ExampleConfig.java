@@ -1,4 +1,4 @@
-package com.example;
+package net.runelite.client.plugins.MyPlugin.src.main.java.com.example;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;

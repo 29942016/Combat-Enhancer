@@ -1,1 +1,3 @@
-rootProject.name = 'example'
+package net.runelite.client.plugins.MyPlugin
+
+rootProject.name = 'MyPlugin'

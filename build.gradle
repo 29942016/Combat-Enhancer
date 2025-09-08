@@ -1,3 +1,5 @@
+package net.runelite.client.plugins.MyPlugin
+
 plugins {
 	id 'java'
 }
