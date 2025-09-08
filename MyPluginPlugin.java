@@ -30,20 +30,24 @@ public class MyPluginPlugin extends Plugin
     private MyPluginOverlay overlay;
 
     @Inject
-    private OverlayManager overlayManager;
+    private MyPluginSceneOverlay sceneOverlay;
 
+    @Inject
+    private OverlayManager overlayManager;
 
     @Override
 	protected void startUp() throws Exception
 	{
         overlayManager.add(overlay);
-		log.info("My Plugin started! Hotchange 2");
+        overlayManager.add(sceneOverlay);
+		log.info("My Plugin started!");
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
         overlayManager.remove(overlay);
+        overlayManager.remove(sceneOverlay);
 		log.info("My Plugin stopped!");
 	}
 
@@ -53,7 +57,6 @@ public class MyPluginPlugin extends Plugin
 		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
 		{
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Example says " + config.greeting(), null);
-
 		}
 	}
 
