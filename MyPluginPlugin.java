@@ -6,8 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -63,6 +65,30 @@ public class MyPluginPlugin extends Plugin
     @Subscribe
     public void onGameTick(GameTick gameTick) {
         Player player = client.getLocalPlayer();
+    }
+
+    @Inject
+    ItemManager itemManager;
+
+    @Subscribe
+    public void onItemSpawned(ItemSpawned itemSpawned) {
+        log.info("Item spawned");
+        Tile tile = itemSpawned.getTile();
+        TileItem item = itemSpawned.getItem();
+        ItemComposition composition = itemManager.getItemComposition(item.getId());
+
+        final GroundItem groundItem = GroundItem.builder()
+                .id(item.getId())
+                .location(tile.getWorldLocation())
+                .itemId(item.getId())
+                .quantity(item.getQuantity())
+                .name(composition.getName())
+                .ownership(item.getOwnership())
+                .isPrivate(item.isPrivate())
+                .build();
+
+        log.info(groundItem.print());
+        log.info("end");
     }
 
 	@Provides
