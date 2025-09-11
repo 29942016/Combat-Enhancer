@@ -3,6 +3,7 @@ package net.runelite.client.plugins.MyPlugin;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
@@ -20,6 +21,7 @@ public class MyPluginOverlay extends OverlayPanel {
     private final MyPluginConfig config;
     private final BuffManager buffManager;
 
+
     @Inject
     private MyPluginOverlay(Client client, MyPluginPlugin plugin, MyPluginConfig config, BuffManager buffManager) {
         this.client = client;
@@ -35,7 +37,6 @@ public class MyPluginOverlay extends OverlayPanel {
         final Boolean isRangePotted = buffManager.IsRangeBoosted();
         final Boolean isMagePotted = buffManager.IsMagicBoosted();
         final Boolean isCombatPotted = buffManager.isCombatBoosted();
-
 
 
         panelComponent.getChildren().add(TitleComponent.builder().text("Mage: " + isMagePotted).color(isMagePotted ? Color.GREEN : Color.RED).build());

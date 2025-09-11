@@ -1,17 +1,20 @@
 package net.runelite.client.plugins.MyPlugin;
 
 import java.awt.*;
+import static net.runelite.client.plugins.MyPlugin.constants.*;
 
 public class Notification {
     public String Shorthand;
-    public String FullName;
+    public NotificationName Id;
     public Color Color;
     public Boolean IsAvailable;
+    public NotificationType Type;
 
-    public Notification(final String shorthand, final String fullName, final Color color) {
+    public Notification(final String shorthand, final NotificationName id, final Color color, NotificationType type) {
         Shorthand = shorthand;
-        FullName = fullName;
+        Id = id;
         Color = color;
         IsAvailable = false;
+        Type = type;
     }
 }

@@ -10,6 +10,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.util.ImageUtil;
+import static net.runelite.client.plugins.MyPlugin.constants.*;
 
 import javax.inject.Inject;
 import java.awt.*;
@@ -28,25 +29,25 @@ class MyPluginSceneOverlay extends Overlay {
     private final Client client;
     private final MyPluginPlugin plugin;
     private final MyPluginConfig config;
-    private final BuffManager buffManager;
+    private final ArrayList<Notification> notifications;
 
     private final ArrayList<Notification> notifierBuffs = new ArrayList<Notification>();
     private final ArrayList<Notification> notifierSpells = new ArrayList<Notification>();
 
     @Inject
-    private MyPluginSceneOverlay(final Client client, final MyPluginConfig config, final MyPluginPlugin plugin, BuffManager buffManager) {
+    private MyPluginSceneOverlay(final Client client, final MyPluginConfig config, final MyPluginPlugin plugin, final ArrayList<Notification> notifications) {
         this.client = client;
         this.config = config;
         this.plugin = plugin;
-        this.buffManager = buffManager;
+        this.notifications = notifications;
 
-        notifierSpells.add(new Notification(" T", "Thralls", Color.BLUE));
-        notifierSpells.add(new Notification("V", "Vengeance", Color.RED));
-        notifierSpells.add(new Notification("DC", "Death Charge", Color.BLUE));
+        notifierSpells.add(new Notification("T", NotificationName.THRALL, Color.BLUE, NotificationType.SPELL));
+        notifierSpells.add(new Notification("V", NotificationName.VENGEANCE, Color.RED, NotificationType.SPELL));
+        notifierSpells.add(new Notification("DC", NotificationName.DEATH_CHARGE, Color.BLUE, NotificationType.SPELL));
 
-        notifierBuffs.add(new Notification("C", "Super Combat", Color.RED));
-        notifierBuffs.add(new Notification("R", "Divine Ranging", Color.GREEN));
-        notifierBuffs.add(new Notification("M", "Imbued Heart", Color.BLUE));
+        notifierBuffs.add(new Notification("C", NotificationName.SUPER_COMBAT, Color.RED,NotificationType.COMBAT));
+        notifierBuffs.add(new Notification("R", NotificationName.DIVINE_RANGING, Color.GREEN,NotificationType.COMBAT));
+        notifierBuffs.add(new Notification("M", NotificationName.IMBUED_HEART, Color.BLUE,NotificationType.COMBAT));
 
 
         setLayer(OverlayLayer.ABOVE_SCENE);
