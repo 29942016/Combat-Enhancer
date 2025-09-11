@@ -41,6 +41,12 @@ public class MyPluginOverlay extends OverlayPanel {
         panelComponent.getChildren().add(TitleComponent.builder().text("Mage: " + isMagePotted).color(isMagePotted ? Color.GREEN : Color.RED).build());
         panelComponent.getChildren().add(TitleComponent.builder().text("Range: " + isRangePotted).color(isRangePotted ? Color.GREEN : Color.RED).build());
         panelComponent.getChildren().add(TitleComponent.builder().text("Combat: " + isCombatPotted).color(isCombatPotted? Color.GREEN : Color.RED).build());
+
+        final String pitch = "Pitch: " + client.getCameraFpPitch();
+        final String yaw = "Yaw: " + client.getCameraFpYaw();
+        panelComponent.getChildren().add(TitleComponent.builder().text((pitch)).build());
+        panelComponent.getChildren().add(TitleComponent.builder().text((yaw)).build());
+
         return super.render(graphics);
     }
 }
