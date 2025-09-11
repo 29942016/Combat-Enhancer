@@ -6,15 +6,24 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import java.awt.*;
+
+
+// HP resources
+// Interface Styles Addon
+// Users\olive\IdeaProjects\runelite\runelite-client\src\main\resources\net\runelite\client\plugins\interfacestyles\2010\healthbar
+
+// Prayer Bar
+// Prayer
+
+
+
 
 @Slf4j
 @PluginDescriptor(
@@ -37,12 +46,15 @@ public class MyPluginPlugin extends Plugin
     @Inject
     private OverlayManager overlayManager;
 
+    @Inject
+    BuffManager buffManager;
+
     @Override
 	protected void startUp() throws Exception
 	{
         overlayManager.add(overlay);
         overlayManager.add(sceneOverlay);
-		log.info("My Plugin started!");
+		log.info("Bucky's Combat UI Started");
 	}
 
 	@Override
@@ -50,7 +62,7 @@ public class MyPluginPlugin extends Plugin
 	{
         overlayManager.remove(overlay);
         overlayManager.remove(sceneOverlay);
-		log.info("My Plugin stopped!");
+        log.info("Bucky's Combat UI Stopped");
 	}
 
 	@Subscribe
@@ -58,37 +70,13 @@ public class MyPluginPlugin extends Plugin
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
 		{
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Example says " + config.greeting(), null);
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Bucky's Combat UI Loaded", null);
 		}
 	}
 
     @Subscribe
     public void onGameTick(GameTick gameTick) {
         Player player = client.getLocalPlayer();
-    }
-
-    @Inject
-    ItemManager itemManager;
-
-    @Subscribe
-    public void onItemSpawned(ItemSpawned itemSpawned) {
-        log.info("Item spawned");
-        Tile tile = itemSpawned.getTile();
-        TileItem item = itemSpawned.getItem();
-        ItemComposition composition = itemManager.getItemComposition(item.getId());
-
-        final GroundItem groundItem = GroundItem.builder()
-                .id(item.getId())
-                .location(tile.getWorldLocation())
-                .itemId(item.getId())
-                .quantity(item.getQuantity())
-                .name(composition.getName())
-                .ownership(item.getOwnership())
-                .isPrivate(item.isPrivate())
-                .build();
-
-        log.info(groundItem.print());
-        log.info("end");
     }
 
 	@Provides
