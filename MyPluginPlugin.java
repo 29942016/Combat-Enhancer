@@ -106,12 +106,22 @@ public class MyPluginPlugin extends Plugin
         for(Item item : items) {
             final int id = item.getId();
             // Imbued Heart
-            if(id == 20724) {
-
-
+            switch(id) {
+                case 20724: // Imbued Heart
+                    break;
+                case 27641: // Saturated Heart
+                    break;
             }
             // Super Combat
+            //37951
+            //37944
+            //37975
+            //37966
             // Divine Ranging
+            //37951
+            //37944
+            //37975
+            //37966
         }
 
 
