@@ -47,10 +47,7 @@ public class MyPluginPlugin extends Plugin
     private OverlayManager overlayManager;
 
     @Inject
-    BuffManager buffManager;
-
-    @Inject
-    private ArrayList<Notification> notifications = new ArrayList<Notification>();
+    public ArrayList<Notification> notifications = new ArrayList<Notification>();
 
     @Override
 	protected void startUp() throws Exception
@@ -77,13 +74,36 @@ public class MyPluginPlugin extends Plugin
         // Magic Buff
         final ItemContainer inventory = event.getItemContainer();
 
+        for(Notification n: this.notifications) {
+            n.IsAvailable = false;
+        }
+
         for(int itemId: constants.MagicItems) {
             if(inventory.contains(itemId)) {
-                log.info("Has magic item.");
-                // Add magic notifier
+                Notification magicBoost = this.notifications.stream()
+                        .filter(item -> item.Id.equals(constants.NotificationName.MAGIC_BOOST))
+                        .findFirst()
+                        .orElse(null);
+                if(magicBoost != null) {
+                    log.info("Has magic item.");
+                    magicBoost.IsAvailable = true;
+                }
             }
         }
+        //TODO
         // Super Combat
+        for(int itemId: constants.CombatItems) {
+            if(inventory.contains(itemId)) {
+                Notification combatBoost = this.notifications.stream()
+                        .filter(item -> item.Id.equals(constants.NotificationName.COMBAT_BOOST))
+                        .findFirst()
+                        .orElse(null);
+                if(combatBoost != null) {
+                    log.info("Has combat item.");
+                    combatBoost.IsAvailable = true;
+                }
+            }
+        }
 
         // Range
     }
@@ -115,11 +135,7 @@ public class MyPluginPlugin extends Plugin
 //                case 27641: // Saturated Heart
 //                    break;
 //            }
-//            // Super Combat
-//            //37951
-//            //37944
-//            //37975
-//            //37966
+
 //            // Divine Ranging
 //            //37951
 //            //37944

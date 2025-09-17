@@ -4,12 +4,25 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public final class constants {
+
     private final static int IMBUED_HEART = 20724;
     private final static int SATURATED_HEART = 27641;
 
     public static int[] MagicItems = new int[]{
             IMBUED_HEART,
-            SATURATED_HEART
+            SATURATED_HEART,
+    };
+
+    private final static int DIVINE_CMB1 = 37966;
+    private final static int DIVINE_CMB2 = 37975;
+    private final static int DIVINE_CMB3 = 37944;
+    private final static int DIVINE_CMB4 = 37951;
+
+    public static int[] CombatItems = new int[]{
+            DIVINE_CMB1,
+            DIVINE_CMB2,
+            DIVINE_CMB3,
+            DIVINE_CMB4,
     };
 
     public static enum NotificationType {
@@ -21,9 +34,9 @@ public final class constants {
         THRALL,
         VENGEANCE,
         DEATH_CHARGE,
-        SUPER_COMBAT,
-        DIVINE_RANGING,
-        IMBUED_HEART
+        COMBAT_BOOST,
+        RANGE_BOOST,
+        MAGIC_BOOST
     }
 
     public static ArrayList<Notification> InitialiseNotifications() {
@@ -51,9 +64,16 @@ public final class constants {
         ));
 
         notifications.add(new Notification(
-                "H",
-                NotificationName.IMBUED_HEART,
+                "M",
+                NotificationName.MAGIC_BOOST,
                 Color.BLUE,
+                NotificationType.COMBAT
+        ));
+
+        notifications.add(new Notification(
+                "C",
+                NotificationName.COMBAT_BOOST,
+                Color.RED,
                 NotificationType.COMBAT
         ));
 

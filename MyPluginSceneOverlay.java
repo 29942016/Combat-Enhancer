@@ -16,8 +16,7 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 class MyPluginSceneOverlay extends Overlay {
@@ -29,43 +28,27 @@ class MyPluginSceneOverlay extends Overlay {
     private final Client client;
     private final MyPluginPlugin plugin;
     private final MyPluginConfig config;
-    private final ArrayList<Notification> notifications;
 
-    private final ArrayList<Notification> notifierBuffs = new ArrayList<Notification>();
-    private final ArrayList<Notification> notifierSpells = new ArrayList<Notification>();
+    final int barWidth = PRAYER_BAR_SIZE.width;
+    final int barHeight = PRAYER_BAR_SIZE.height;
 
     @Inject
-    private MyPluginSceneOverlay(final Client client, final MyPluginConfig config, final MyPluginPlugin plugin, final ArrayList<Notification> notifications) {
+    private MyPluginSceneOverlay(final Client client, final MyPluginConfig config, final MyPluginPlugin plugin) {
         this.client = client;
         this.config = config;
         this.plugin = plugin;
-        this.notifications = notifications;
-
-        notifierSpells.add(new Notification("T", NotificationName.THRALL, Color.BLUE, NotificationType.SPELL));
-        notifierSpells.add(new Notification("V", NotificationName.VENGEANCE, Color.RED, NotificationType.SPELL));
-        notifierSpells.add(new Notification("DC", NotificationName.DEATH_CHARGE, Color.BLUE, NotificationType.SPELL));
-
-        notifierBuffs.add(new Notification("C", NotificationName.SUPER_COMBAT, Color.RED,NotificationType.COMBAT));
-        notifierBuffs.add(new Notification("R", NotificationName.DIVINE_RANGING, Color.GREEN,NotificationType.COMBAT));
-        notifierBuffs.add(new Notification("M", NotificationName.IMBUED_HEART, Color.BLUE,NotificationType.COMBAT));
-
 
         setLayer(OverlayLayer.ABOVE_SCENE);
         setPriority(PRIORITY_HIGH);
         setPosition(OverlayPosition.DYNAMIC);
     }
 
-
-    final int barWidth = PRAYER_BAR_SIZE.width;
-    final int barHeight = PRAYER_BAR_SIZE.height;
-
     @Override
     public Dimension render(Graphics2D graphics) {
-
         final int height = client.getLocalPlayer().getLogicalHeight() + 25;
-        final LocalPoint locallocation = client.getLocalPlayer().getLocalLocation();
+        final LocalPoint locAllocation = client.getLocalPlayer().getLocalLocation();
         WorldView wv = client.getWorldView(-1);
-        final Point canvasPoint = Perspective.localToCanvas(client, locallocation, wv.getPlane(), height);
+        final Point canvasPoint = Perspective.localToCanvas(client, locAllocation, wv.getPlane(), height);
 
         // Bar Offsets
         final Point anchorPosition = new Point(canvasPoint.getX() - 15, canvasPoint.getY());
@@ -75,7 +58,7 @@ class MyPluginSceneOverlay extends Overlay {
         this.drawHpBar(graphics, anchorPosition);
         this.drawMpBar(graphics, anchorPosition);
         this.drawSpecBar(graphics, anchorPosition);
-        this.drawThrallPanel(graphics, anchorPosition);
+        this.drawNotifications(graphics, anchorPosition);
 
         return null;
     }
@@ -126,29 +109,23 @@ class MyPluginSceneOverlay extends Overlay {
     // C - SCB
     // M - Heart
     // R - Divine Ranging
-    public void drawThrallPanel(Graphics2D graphics, Point anchorPoint) {
+    public void drawNotifications(Graphics2D graphics, Point anchorPoint) {
 
         graphics.setColor(Color.BLUE);
         final Font fontName = graphics.getFont();
         final Font f = new Font(fontName.getName(), fontName.getStyle(), 12);
         graphics.setFont(f);
 
-        int index = 1;
-        for(var item: notifierBuffs) {
-            graphics.setColor(item.Color);
-            graphics.drawString(item.Shorthand, anchorPoint.getX() - 15, anchorPoint.getY() + (index * 8));
-            index++;
-        }
+        ArrayList<Notification> iterableNotifications = plugin.notifications.stream().filter(n -> n.IsAvailable == true).collect(Collectors.toCollection(ArrayList::new));
 
-        index = 1;
-        for(var item: notifierSpells) {
-            graphics.setColor(item.Color);
-            graphics.drawString(item.Shorthand, anchorPoint.getX() + barWidth + 7, anchorPoint.getY() + (index * 8));
+        int index = 1;
+        for(Notification notification: iterableNotifications) {
+            int xOffset = (notification.Type == NotificationType.COMBAT) ? -15 : barWidth + 7;
+            int yOffset = index * 8; //(int)notifications.stream().filter(n -> n.Type == notification.Type)
+            graphics.setColor(notification.Color);
+            graphics.drawString(notification.Shorthand, anchorPoint.getX() + xOffset, anchorPoint.getY() + yOffset);
             index++;
         }
     }
-
-
-
 
 }
