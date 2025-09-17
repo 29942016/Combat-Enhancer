@@ -7,15 +7,15 @@ import net.runelite.api.*;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.gameval.InterfaceID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import java.awt.*;
 import java.util.ArrayList;
+
+import static net.runelite.client.plugins.MyPlugin.constants.InitialiseNotifications;
 
 
 // HP resources
@@ -57,6 +57,7 @@ public class MyPluginPlugin extends Plugin
 	{
         overlayManager.add(overlay);
         overlayManager.add(sceneOverlay);
+        this.notifications = InitialiseNotifications();
 		log.info("Bucky's Combat UI Started");
 	}
 
@@ -78,6 +79,7 @@ public class MyPluginPlugin extends Plugin
 
         for(int itemId: constants.MagicItems) {
             if(inventory.contains(itemId)) {
+                log.info("Has magic item.");
                 // Add magic notifier
             }
         }
@@ -89,40 +91,41 @@ public class MyPluginPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		if (gameStateChanged.getGameState() == GameState.LOGGED_IN) {
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Bucky's Combat UI Loaded", null);
+        }
 	}
 
     @Subscribe
     public void onGameTick(GameTick gameTick) {
         // Combat Buff Check
-        final ItemContainer itemContainer = client.getItemContainer(net.runelite.api.gameval.InventoryID.INV);
-
-        if(itemContainer == null)
-            return;
-
-        final Item[] items = itemContainer.getItems();
-
-        for(Item item : items) {
-            final int id = item.getId();
-            // Imbued Heart
-            switch(id) {
-                case 20724: // Imbued Heart
-                    break;
-                case 27641: // Saturated Heart
-                    break;
-            }
-            // Super Combat
-            //37951
-            //37944
-            //37975
-            //37966
-            // Divine Ranging
-            //37951
-            //37944
-            //37975
-            //37966
-        }
+//        final ItemContainer itemContainer = client.getItemContainer(net.runelite.api.gameval.InventoryID.INV);
+//
+//        if(itemContainer == null)
+//            return;
+//
+//        final Item[] items = itemContainer.getItems();
+//
+//        for(Item item : items) {
+//            final int id = item.getId();
+//            // Imbued Heart
+//            switch(id) {
+//                case 20724: // Imbued Heart
+//                    break;
+//                case 27641: // Saturated Heart
+//                    break;
+//            }
+//            // Super Combat
+//            //37951
+//            //37944
+//            //37975
+//            //37966
+//            // Divine Ranging
+//            //37951
+//            //37944
+//            //37975
+//            //37966
+//        }
 
 
 
