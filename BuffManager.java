@@ -1,7 +1,6 @@
 package net.runelite.client.plugins.MyPlugin;
 
 import com.google.common.collect.ImmutableSet;
-import lombok.Builder;
 import lombok.Data;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
@@ -26,16 +25,7 @@ class BuffManager {
         this.client = client;
     }
 
-    public Boolean IsSuperCombatPotted() {
-//        for(final Skill skill : Skill.values()) {
-//            if(!BOOSTABLE_COMBAT_SKILLS.contains((skill)))
-//                continue;
-//        }
-//        return true;
-        return false;
-    }
-
-    public Boolean isCombatBoosted() {
+    public Boolean IsCombatBoosted() {
         final int currentAttack = client.getBoostedSkillLevel(Skill.ATTACK);
         final int originalAttack = client.getRealSkillLevel(Skill.ATTACK);
 

@@ -1,7 +1,5 @@
 package net.runelite.client.plugins.MyPlugin;
 
-import net.runelite.api.Client;
-
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -77,7 +75,7 @@ public final class constants {
                 NotificationName.DEATH_CHARGE,
                 Color.ORANGE,
                 NotificationType.SPELL,
-                () -> { return false; }
+                () -> { return true; }
         ));
 
         notifications.add(new Notification(
@@ -93,7 +91,7 @@ public final class constants {
                 NotificationName.COMBAT_BOOST,
                 Color.RED,
                 NotificationType.COMBAT,
-                buffManager::IsSuperCombatPotted
+                buffManager::IsCombatBoosted
         ));
 
         notifications.add(new Notification(

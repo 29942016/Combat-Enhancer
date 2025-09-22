@@ -12,7 +12,7 @@ public class Notification {
     public Color Color;
     public Boolean IsAvailable;
     public NotificationType Type;
-    public Supplier<Boolean> ShouldRender;
+    private Supplier<Boolean> ShouldRender;
 
     public Notification(final String shorthand, final NotificationName id, final Color color, NotificationType type, Supplier<Boolean> shouldRender) {
         Shorthand = shorthand;
@@ -21,5 +21,11 @@ public class Notification {
         IsAvailable = false;
         Type = type;
         ShouldRender = shouldRender;
+    }
+
+    // Invert the logic, shouldrender is based upon IsBoosted
+    // If IsBoosted then don't render notification.
+    public Boolean ShouldRender() {
+        return !this.ShouldRender.get();
     }
 }
