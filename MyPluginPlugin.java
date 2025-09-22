@@ -14,6 +14,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static net.runelite.client.plugins.MyPlugin.constants.InitialiseNotifications;
 
@@ -46,6 +47,8 @@ public class MyPluginPlugin extends Plugin
     @Inject
     private OverlayManager overlayManager;
 
+    @Inject BuffManager buffManager;
+
     @Inject
     public ArrayList<Notification> notifications = new ArrayList<Notification>();
 
@@ -54,7 +57,7 @@ public class MyPluginPlugin extends Plugin
 	{
         overlayManager.add(overlay);
         overlayManager.add(sceneOverlay);
-        this.notifications = InitialiseNotifications();
+        this.notifications = InitialiseNotifications(buffManager);
 		log.info("Bucky's Combat UI Started");
 	}
 
@@ -78,6 +81,10 @@ public class MyPluginPlugin extends Plugin
             n.IsAvailable = false;
         }
 
+        // Print inv items
+        // Arrays.asList(inventory.getItems()).forEach(item -> log.info(" > " + item.getId()));
+
+        // Mage
         for(int itemId: constants.MagicItems) {
             if(inventory.contains(itemId)) {
                 Notification magicBoost = this.notifications.stream()
@@ -85,13 +92,13 @@ public class MyPluginPlugin extends Plugin
                         .findFirst()
                         .orElse(null);
                 if(magicBoost != null) {
-                    log.info("Has magic item.");
+                    log.info("Has magic item & can boost.");
                     magicBoost.IsAvailable = true;
                 }
             }
         }
-        //TODO
-        // Super Combat
+
+        // Melee
         for(int itemId: constants.CombatItems) {
             if(inventory.contains(itemId)) {
                 Notification combatBoost = this.notifications.stream()
@@ -106,6 +113,18 @@ public class MyPluginPlugin extends Plugin
         }
 
         // Range
+        for(int itemId: constants.RangeItems) {
+            if(inventory.contains(itemId)) {
+                Notification rangeBoost = this.notifications.stream()
+                        .filter(item -> item.Id.equals(constants.NotificationName.RANGE_BOOST))
+                        .findFirst()
+                        .orElse(null);
+                if(rangeBoost != null) {
+                    log.info("Has range item.");
+                    rangeBoost.IsAvailable = true;
+                }
+            }
+        }
     }
 
 	@Subscribe

@@ -120,6 +120,9 @@ class MyPluginSceneOverlay extends Overlay {
 
         int index = 1;
         for(Notification notification: iterableNotifications) {
+            if(!notification.ShouldRender.get()) {
+                continue;
+            }
             int xOffset = (notification.Type == NotificationType.COMBAT) ? -15 : barWidth + 7;
             int yOffset = index * 8; //(int)notifications.stream().filter(n -> n.Type == notification.Type)
             graphics.setColor(notification.Color);
